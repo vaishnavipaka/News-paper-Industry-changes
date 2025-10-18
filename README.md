@@ -26,5 +26,14 @@ Sneak peak of output of both sql and python
 
 <img width="584" height="569" alt="Screenshot 2025-10-18 123931" src="https://github.com/user-attachments/assets/f28bda53-aa02-4d56-af1d-f5dda0327b68" />
 
-<img width="665" height="546" alt="Screenshot 2025-10-18 123721" src="https://github.com/user-attachments/assets/c4c9a4de-dca2-4ff1-b460-830ea2ef3565" />
+
+<img width="665" height="546" alt="Screenshot 2025-10-18 123721" src<img width="724" height="496" alt="Screenshot 2025-10-18 160516" src="https://github.com/user-attachments/assets/c0154002-bfa2-482e-a815-6a06c6622c54" />
+
+
+<img width="755" height="514" alt="Screenshot 2025-10-18 160537" src="https://github.com/user-attachments/assets/9ad6079b-6888-4873-9a9e-d1ef485f2da0" />
+
+
+<img width="967" height="418" alt="Screenshot 2025-10-18 160458" src="https://github.com/user-attachments/assets/2457dc63-00ff-42fb-9788-98a92178699a" />
+
+
 
