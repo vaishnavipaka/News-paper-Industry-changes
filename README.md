@@ -14,6 +14,14 @@ Python (visual insights)                         / open newnews.ipynb
 powerbi (Interactive dashboard)
 
 
+A Few Insights-
+1. Print Circulation - 2019 ie initial year circulated 3.2 M copies, Assuming the highest of all time.
+2. Top 3 Cities for Net Circulation - Jaipur,Varanasi, Mumbai  3.8 M - 4.3 M
+3. Top 3 Waste Analysis (unsold copies) - Varanasi, Jaipur, Mumbai (Varanasi and Delhi waste more than they circulate copies.
+4. Observed cities with low circulation bring more Ad Revenue than the ones with high circulation of copies.
+   
+
+
 
 Sneak peak of output of both sql and python
 
