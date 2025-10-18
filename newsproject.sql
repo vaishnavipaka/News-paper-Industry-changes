@@ -5,7 +5,17 @@ select * from fact_city_readiness;
 select * from fact_digital_pilot;
 select * from fact_print_sales;
 
-  
+GRANT ALL PRIVILEGES ON news.* TO 'pythonuser'@'localhost';
+FLUSH PRIVILEGES;
+
+SHOW GRANTS FOR 'pythonuser'@'localhost';
+GRANT ALL PRIVILEGES ON `news`.* TO 'pythonuser'@'localhost';
+-- List databases pythonuser can access
+SHOW DATABASES;
+
+-- See if 'news' is listed
+show tables;
+   
 describe dim_city;
 describe dim_ad_category;
 describe fact_ad_revenue;
@@ -261,17 +271,71 @@ join dim_ad_category dac on dac.ad_categoryid=fr.ad_category
 group by fp.City_ID,fp.edition_id,dac.standard_ad_category
 order by sum(fr.ad_revenue) desc;
 
-6. Digital Readiness vs. Performance 
+/*6. Digital Readiness vs. Performance 
 Which cities show high digital readiness (based on smartphone, internet, and 
-literacy rates) but had low digital pilot engagement? 
+literacy rates) but had low digital pilot engagement? */
+  
+SELECT
+    dc.city,
+    AVG(fcr.smartphone_penetration) AS avg_smartphone,
+    AVG(fcr.internet_penetration) AS avg_internet,
+    AVG(fcr.literacy_rate) AS avg_literacy
+FROM fact_city_readiness fcr
+JOIN dim_city dc ON fcr.city_id = dc.City_ID
+WHERE SUBSTRING(fcr.quarter, 1, 4) BETWEEN '2019' AND '2024'
+GROUP BY dc.city
+ORDER BY avg_smartphone DESC, avg_internet DESC;
 
 
-7. Ad Revenue vs. Circulation ROI 
+
+/*7. Ad Revenue vs. Circulation ROI 
 Which cities had the highest ad revenue per net circulated copy? Is this ratio 
-improving or worsening over time? 
-8. Digital Relaunch City Prioritization 
+improving or worsening over time? */
+
+SELECT
+    dc.city,
+    SUBSTRING(fas.quarter, 1, 4) AS year,
+    SUM(fas.ad_revenue) AS total_ad_revenue,
+    SUM(dps.Net_Circulation) AS total_circulation,
+    ROUND(SUM(fas.ad_revenue) / SUM(dps.Net_Circulation), 2) AS revenue_per_copy
+FROM fact_ad_revenue fas
+JOIN fact_print_sales dps ON fas.edition_id = dps.edition_id
+JOIN dim_city dc ON dps.City_ID = dc.City_ID
+WHERE SUBSTRING(fas.quarter, 1, 4) BETWEEN '2019' AND '2024'
+AND dps.Net_Circulation > 0
+GROUP BY dc.city, year
+HAVING total_circulation > 0
+ORDER BY revenue_per_copy DESC;
+
+/*8. Digital Relaunch City Prioritization 
 Based on digital readiness, pilot engagement, and print decline, which 3 cities should be 
-prioritized for Phase 1 of the digital relaunch? ---------------------------------------------------------------------------------------------------- 
+prioritized for Phase 1 of the digital relaunch?*/
+SELECT
+    dc.city,
+    AVG(fcr.smartphone_penetration) AS avg_smartphone,
+    AVG(fcr.internet_penetration) AS avg_internet,
+    AVG(fcr.literacy_rate) AS avg_literacy,
+    d2019.circulation_2019,
+    d2024.circulation_2024
+FROM dim_city dc
+JOIN fact_city_readiness fcr ON fcr.city_id = dc.City_ID
+LEFT JOIN (
+    SELECT City_ID, SUM(Net_Circulation) AS circulation_2019
+    FROM fact_print_sales
+    WHERE YEAR(Month_numeric) = 2019
+    GROUP BY City_ID
+) d2019 ON d2019.City_ID = dc.City_ID
+LEFT JOIN (
+    SELECT City_ID, SUM(Net_Circulation) AS circulation_2024
+    FROM fact_print_sales
+    WHERE YEAR(Month_numeric) = 2024
+    GROUP BY City_ID
+) d2024 ON d2024.City_ID = dc.City_ID
+WHERE SUBSTRING(fcr.quarter, 1, 4) BETWEEN '2019' AND '2024'
+GROUP BY dc.city, dc.City_ID, d2019.circulation_2019, d2024.circulation_2024
+HAVING circulation_2019 > 0 AND circulation_2024 > 0;
+
+ 
 codebasics.i
 
 
