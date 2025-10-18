@@ -7,9 +7,9 @@ This helps newspapers evolve and thrive in the digital age.
 Tools used -
 
  
-MYSQL Workbench( primary and secondary analysis)
+MYSQL Workbench( primary and secondary analysis) / To view this open _SQLout.ipynb
 
-Python (visual insights)
+Python (visual insights)                         / open newnews.ipynb
 
 powerbi (Interactive dashboard)
 
